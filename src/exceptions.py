@@ -26,9 +26,9 @@ class BadRequest(DetailedHTTPException):
     DETAIL = "Solicitud incorrecta"
 
 
-class UnprocessableEntity(DetailedHTTPException):
-    STATUS_CODE = status.HTTP_422_UNPROCESSABLE_ENTITY
-    DETAIL = "Entidad no procesable"
+class UnprocessableContent(DetailedHTTPException):
+    STATUS_CODE = status.HTTP_422_UNPROCESSABLE_CONTENT
+    DETAIL = "Contenido no procesable"
 
 
 class NotAuthenticated(DetailedHTTPException):
