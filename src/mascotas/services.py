@@ -12,7 +12,9 @@ def crear_mascota(db: Session, mascota: schemas.MascotaCreate) -> schemas.Mascot
     _mascota = Mascota(**mascota.model_dump())
     db.add(_mascota)
     db.commit()
-    db.refresh(_mascota)
+    db.refresh(
+        _mascota
+    )  # <- qué hace refresh()?: https://docs.sqlalchemy.org/en/21/orm/session_api.html#sqlalchemy.orm.Session.refresh
     return _mascota
 
 
@@ -23,7 +25,7 @@ def listar_mascotas(db: Session) -> List[schemas.Mascota]:
 def leer_mascota(db: Session, mascota_id: int) -> schemas.Mascota:
     db_mascota = db.scalar(select(Mascota).where(Mascota.id == mascota_id))
     if db_mascota is None:
-        raise exceptions.MascotaNoEncontrada()
+        raise exceptions.MascotaNoEncontrada() # <- usamos nuestras propias excepciones adaptadas al dominio de aplicación
     return db_mascota
 
 
@@ -31,7 +33,9 @@ def modificar_mascota(
     db: Session, mascota_id: int, mascota: schemas.MascotaUpdate
 ) -> Mascota:
     db_mascota = leer_mascota(db, mascota_id)
-    db.execute(update(Mascota).where(Mascota.id == mascota_id).values(**mascota.model_dump()))
+    db.execute(update(Mascota)
+               .where(Mascota.id == mascota_id)
+               .values(**mascota.model_dump()))
     db.commit()
     db.refresh(db_mascota)
     return db_mascota

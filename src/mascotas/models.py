@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from enum import auto, StrEnum
 from src.models import ModeloBase
@@ -14,9 +14,9 @@ class TipoMascota(StrEnum):
 class Mascota(ModeloBase):
     __tablename__ = "mascotas"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    nombre: Mapped[str] = mapped_column(String, index=True)
-    tipo: Mapped[TipoMascota] = mapped_column(String)  # ej.: "Gato", "Perro", etc.
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    nombre: Mapped[str] = mapped_column(index=True)
+    tipo: Mapped[TipoMascota] = mapped_column()  # ej.: "Gato", "Perro", etc.
     tutor_id: Mapped[int] = mapped_column(
         ForeignKey("personas.id")
     )  # Foreign key a Persona

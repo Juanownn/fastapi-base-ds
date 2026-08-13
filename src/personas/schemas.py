@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import List
 from src import Mascota
 
@@ -26,4 +26,4 @@ class Persona(PersonaBase):
 
     # from_atributes=True permite que Pydantic trabaje con modelos SQLAlchemy
     # más info.: https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.from_attributes
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes= True)
