@@ -1,8 +1,12 @@
+import logging
 from typing import List
 from sqlalchemy import delete, select, update
 from sqlalchemy.orm import Session
 from src.personas.models import Persona
 from src.personas import schemas, exceptions
+
+# Creamos un logger para este módulo específico. Más info.: https://docs.python.org/3/library/logging.html
+logger = logging.getLogger(__name__)
 
 # operaciones CRUD para Personas
 
@@ -15,6 +19,7 @@ def crear_persona(db: Session, persona: schemas.PersonaCreate) -> schemas.Person
 
 
 def listar_personas(db: Session) -> List[schemas.Persona]:
+    logger.info("Listando personas desde services")  # <- este mensaje se verá por la terminal
     return db.scalars(select(Persona)).all()
 
 

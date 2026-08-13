@@ -1,3 +1,5 @@
+import logging
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,6 +10,7 @@ class Settings(BaseSettings):
     ENV: str = "DEV"
     ROOT_PATH_DEVELOPMENT: str = ""
     ROOT_PATH_PRODUCTION: str = ""
+    LOG_LEVEL: str = "INFO"
 
     # Configuración para que lea automáticamente el archivo .env
     model_config = SettingsConfigDict(

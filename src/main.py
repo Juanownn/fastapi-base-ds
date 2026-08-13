@@ -6,7 +6,10 @@ from src.models import ModeloBase
 # Importamos la configuración validada por Pydantic
 from src.config import settings
 
-# importamos los routers desde nuestros modulos
+# Importamos configuracion de logger
+from src.logger import setup_logging
+
+# Importamos los routers desde nuestros modulos
 from src.personas.router import router as personas_router
 from src.mascotas.router import router as mascotas_router
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 ENV = settings.ENV.upper()
 ROOT_PATH = getattr(settings, f"ROOT_PATH_{ENV}", "")
 
+setup_logging()
 
 @asynccontextmanager
 async def db_creation_lifespan(app: FastAPI):
