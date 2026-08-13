@@ -1,11 +1,10 @@
-import os
 import pytest
-from dotenv import load_dotenv
 from typing import Generator
 from sqlalchemy import StaticPool, create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from src.main import app
 from src.database import get_db
+from src.config import settings
 from src.models import ModeloBase
 from src.personas.services import crear_persona
 from src.mascotas.services import crear_mascota
@@ -13,12 +12,10 @@ from src.personas.schemas import PersonaCreate
 from src.mascotas.schemas import MascotaCreate
 from src.mascotas.models import TipoMascota
 
-load_dotenv()
 
 # creamos una db para testing
-DATABASE_URL = os.getenv("DB_URL_TEST")
 engine = create_engine(
-    DATABASE_URL,
+    settings.DB_URL_TEST,
     connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )

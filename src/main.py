@@ -1,19 +1,18 @@
-import os
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from src.database import engine
 from src.models import ModeloBase
+
+# Importamos la configuración validada por Pydantic
+from src.config import settings
 
 # importamos los routers desde nuestros modulos
 from src.personas.router import router as personas_router
 from src.mascotas.router import router as mascotas_router
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()
-
-ENV = os.getenv("ENV")
-ROOT_PATH = os.getenv(f"ROOT_PATH_{ENV.upper()}")
+ENV = settings.ENV.upper()
+ROOT_PATH = getattr(settings, f"ROOT_PATH_{ENV}", "")
 
 
 @asynccontextmanager
