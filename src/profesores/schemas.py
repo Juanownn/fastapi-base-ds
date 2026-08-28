@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import List
-from src import CursoSimple, DepartamentoSimple
 from datetime import datetime
+from src.schemas.simples import DepartamentoSimple
 
 class ProfesorBase(BaseModel):
     nombre: str
@@ -22,6 +22,6 @@ class Profesor(ProfesorBase):
     id: int
     fecha_ingreso: datetime
     departamento: DepartamentoSimple
-    cursos: List[CursoSimple]
+    #cursos: List[CursoSimple]
 
     model_config = ConfigDict(from_attributes= True)

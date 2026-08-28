@@ -2,39 +2,47 @@ import logging
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.personas import schemas, services
+from src.profesores import schemas, services
+from src.schemas.simples import ProfesorSimple
 
-# Creamos un logger para este módulo específico. Más info.: https://docs.python.org/3/library/logging.html
+# Creamos un logger para este módulo específico. Más info.:
+# https://docs.python.org/3/library/logging.html
+
 logger = logging.getLogger(__name__)
+router = APIRouter(
+    prefix="/profesor",
+    tags=["profesores"]
+)
 
-router = APIRouter(prefix="/personas", tags=["personas"])
+# Rutas para profesor
 
-# Rutas para Personas
-
-
-@router.post("/", response_model=schemas.Persona)
-def create_persona(persona: schemas.PersonaCreate, db: Session = Depends(get_db)):
-    return services.crear_persona(db, persona)
-
-
-@router.get("/", response_model=list[schemas.Persona])
-def read_personas(db: Session = Depends(get_db)):
-    logger.info("Consultando la lista de personas desde endpoint...")  # <- este mensaje se verá por la terminal
-    return services.listar_personas(db)
-
-
-@router.get("/{persona_id}", response_model=schemas.Persona)
-def read_persona(persona_id: int, db: Session = Depends(get_db)):
-    return services.leer_persona(db, persona_id)
-
-
-@router.put("/{persona_id}", response_model=schemas.Persona)
-def update_persona(
-    persona_id: int, persona: schemas.PersonaUpdate, db: Session = Depends(get_db)
+@router.post("/", response_model=schemas.Profesor)
+def create_profesor(
+    profesor: schemas.ProfesorCreate,
+    db: Session = Depends(get_db)
 ):
-    return services.modificar_persona(db, persona_id, persona)
+    return services.crear_profesor(db, profesor)
+
+@router.get("/", response_model=list[schemas.Profesor])
+def read_profesores(db: Session = Depends(get_db)):
+    logger.info("Consultando la lista de profesores desde endpoint...")
+    return services.listar_profesores(db)
 
 
-@router.delete("/{persona_id}", response_model=schemas.Persona)
-def delete_persona(persona_id: int, db: Session = Depends(get_db)):
-    return services.eliminar_persona(db, persona_id)
+@router.get("/{profesor_id}", response_model=schemas.Profesor)
+def read_profesor(profesor_id: int, db: Session = Depends(get_db)):
+    return services.leer_profesor(profesor_id, db)
+
+
+@router.put("/{profesor_id}", response_model=schemas.Profesor)
+def update_profesor(
+    profesor_id: int,
+    profesor: schemas.ProfesorUpdate,
+    db: Session = Depends(get_db)
+):
+    return services.modificar_profesor(db, profesor_id, profesor)
+
+
+@router.delete("/{profesor_id}", response_model=ProfesorSimple)
+def delete_profesor(profesor_id: int, db: Session = Depends(get_db)):
+    return services.eliminar_profesor(db, profesor_id)
